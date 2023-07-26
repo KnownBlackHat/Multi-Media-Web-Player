@@ -3,7 +3,7 @@ export let src;
 let downloadBtn;
 </script>
 
-<div class="rounded border-2 border-white overflow-hidden"
+<div class="rounded border-2 border-white overflow-hidden" role="button" tabindex="0"
 on:mouseenter={() => {downloadBtn.style.visibility="visible"}}
 on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
 >
@@ -17,7 +17,7 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
 {#if src.match(/\.(jpe?g|png|gif)/)}
     <img class="h-48 w-full rounded" src={src} alt={src} />
 {:else}
-    <video class="h-48 w-full rounded" src={src} controls loop
+    <video class="h-48 w-full rounded" src={src} controls loop role="button"
     on:mouseenter={e => e.target.play()}>
         <track kind="captions" />
     </video>

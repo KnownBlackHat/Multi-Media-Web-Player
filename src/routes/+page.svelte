@@ -17,7 +17,7 @@ $: console.log(links)
     </header>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {#if links}
-                {#each links as link}
+                {#each links as link, index (index)}
                     <MediaCard src={link} />
                 {/each}
             {/if}
