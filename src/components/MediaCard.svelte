@@ -17,8 +17,7 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
 {#if src.match(/\.(jpe?g|png|gif)/)}
     <img class="h-48 w-full rounded" src={src} alt={src} />
 {:else}
-    <video class="h-48 w-full rounded" src={src} controls loop role="button"
-    on:mouseenter={e => e.target.play()}>
+    <video class="h-48 w-full rounded" src={src} controls loop>
         <track kind="captions" />
     </video>
 {/if}
