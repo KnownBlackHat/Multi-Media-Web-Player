@@ -24,8 +24,8 @@ $: input? toLoad = [...links.splice(0, 16)] : null
 
     {#if links}
         <div class="mx-2 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {#each toLoad as link}
-                <MediaCard src={link} />
+            {#each toLoad as link, index}
+                <MediaCard {index} src={link} />
             {/each}
         </div>
         {#if links.length > 0}

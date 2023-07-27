@@ -1,5 +1,6 @@
 <script>
 export let src;
+export let index;
 import { fade } from 'svelte/transition';
 let downloadBtn;
 </script>
@@ -16,14 +17,14 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
     </span>
     </div>
 {#if src.match(/\.(jpe?g|png|gif)/)}
-    <img class="h-60 rounded mx-auto" src={src} alt={src}
+    <img class="h-60 rounded mx-auto" media-id={index} src={src} alt={src}
     on:click={(e) => {
         ["absolute","top-0","w-fit","h-full", "mx-4", "right-0"].map(v=>{
             e.target.classList.toggle(v)
             })
         }}/>
 {:else}
-    <video class="h-60 w-full rounded" src={src} preload="true" controls
+    <video class="h-60 w-full rounded" src={src} media-id={index} preload="true" controls
         on:mouseenter={e => e.target.focus()}
         on:keypress={(e) => { 
             switch(e.key) {
