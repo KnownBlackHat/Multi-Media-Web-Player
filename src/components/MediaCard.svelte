@@ -17,14 +17,21 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
     </span>
     </div>
 {#if src.match(/\.(jpe?g|png|gif)/)}
-    <img class="h-60 rounded mx-auto" media-id={index} src={src} alt={src}
-    on:click={(e) => {
-        ["absolute","top-0","w-fit","h-full", "mx-4", "right-0"].map(v=>{
-            e.target.classList.toggle(v)
-            })
-        }}/>
+    <div class="bg-black inset-0"> 
+
+    <img defer preload="auto" class="rounded  h-[15em] mx-auto bg-black"
+    media-id={index} src={src} alt={src} on:click={(e) => {
+        ["top-0","h-screen"].map(v=>{
+                e.target.classList.toggle(v);
+                });
+        ["fixed", "z-20"].map(v=>{
+                e.target.parentElement.classList.toggle(v);
+                })
+        document.body.classList.toggle("overflow-y-hidden");
+    }}/>
+    </div>
 {:else}
-    <video class="h-60 w-full rounded" src={src} media-id={index} preload="true" controls
+    <video defer class="h-60 w-full rounded" src={src} media-id={index} preload="auto" controls
         on:mouseenter={e => e.target.focus()}
         on:keypress={(e) => { 
             switch(e.key) {
