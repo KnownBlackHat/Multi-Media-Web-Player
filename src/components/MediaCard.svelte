@@ -1,8 +1,24 @@
 <script>
 export let src;
 export let index;
+export let playbackRate;
+
 import { fade } from 'svelte/transition';
+
 let downloadBtn;
+let paused=true;
+let duration=0;
+let currentTime=0;
+
+function format(seconds) {
+		if (isNaN(seconds)) return '...';
+
+		const minutes = Math.floor(seconds / 60);
+		seconds = Math.floor(seconds % 60);
+		if (seconds < 10) seconds = '0' + seconds;
+
+		return `${minutes}:${seconds}`;
+	}
 </script>
 
 <div transition:fade class="rounded border-2 h-fit border-white overflow-hidden" role="button" tabindex="0"
@@ -31,7 +47,11 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
     }}/>
     </div>
 {:else}
-    <video defer class="h-60 w-full rounded" src={src} media-id={index} preload="auto" controls
+    <video defer class="h-60 w-full rounded" {src} media-id={index} preload="auto" playsinline loop
+        bind:playbackRate
+        bind:paused
+        bind:duration
+        bind:currentTime
         on:mouseenter={e => e.target.focus()}
         on:keypress={(e) => { 
             switch(e.key) {
@@ -39,13 +59,22 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
                     if (!document.fullscreenElement) {
                             e.target.play()
                             e.target.requestFullscreen()
+                            e.target.controls = true
                         }
                     else {
                             e.target.pause()
                             document.exitFullscreen()
+                            e.target.controls = false
                         }
-                }}}>
+                }}}
+        on:click={(e) => {e.target.paused ? e.target.play() : e.target.pause()}}
+                >
         <track kind="captions" />
     </video>
+    <span class="flex justify-between px-2">
+    <span>{format(currentTime)}</span>
+    <input class="w-full mx-2" type="range" min="0" max={duration} step="0.01" bind:value={currentTime} />
+    <span>{format(duration)}</span>
+    </span>
 {/if}
 </div>
