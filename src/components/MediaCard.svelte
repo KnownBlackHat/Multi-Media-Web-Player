@@ -4,6 +4,7 @@ export let index;
 export let playbackRate;
 
 import { fade } from 'svelte/transition';
+import viewport from '../actions/ViewPort';
 
 let downloadBtn;
 let paused=true;
@@ -48,6 +49,8 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
     </div>
 {:else}
     <video defer class="h-60 w-full rounded" {src} media-id={index} preload="auto" playsinline loop
+        use:viewport
+        on:exitViewport={e => {e.target.pause()}}
         bind:playbackRate
         bind:paused
         bind:duration
@@ -62,7 +65,6 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
                             e.target.controls = true
                         }
                     else {
-                            e.target.pause()
                             document.exitFullscreen()
                             e.target.controls = false
                         }
