@@ -5,7 +5,7 @@ let links = null;
 let playbackRate = 1;
 let toLoad = [];
 $: input? links = input.split(" ") : null
-$: input? toLoad = [...links.splice(0, 16)] : null
+$: input? toLoad = [...links.splice(0, 50)] : null
 </script>
 <style>
     :global(body){

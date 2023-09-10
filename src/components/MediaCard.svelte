@@ -36,8 +36,13 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
 {#if src.match(/\.(jpe?g|png|gif)/)}
     <div class="bg-black inset-0"> 
 
-    <img defer preload="auto" class="rounded  h-[15em] mx-auto bg-black"
-    media-id={index} src={src} alt={src} on:click={(e) => {
+    <img async preload="auto" class="rounded  h-[15em] mx-auto bg-black"
+        use:viewport
+        on:enterViewport={e => {
+            if (e.target.src) return;
+                e.target.src = e.target.dataset.src
+            }}
+        media-id={index} data-src={src} alt={src} on:click={(e) => {
         ["top-0","h-screen"].map(v=>{
                 e.target.classList.toggle(v);
                 });
@@ -48,8 +53,18 @@ on:mouseleave={() => {downloadBtn.style.visibility="hidden"}}
     }}/>
     </div>
 {:else}
-    <video defer class="h-60 w-full rounded" {src} media-id={index} preload="auto" playsinline loop
+    <video async class="h-60 w-full rounded" data-src={src} media-id={index} preload="auto" playsinline loop
         use:viewport
+        on:error={e => {
+            if (!e.targer.src.startsWith("http")) return;
+            setTimeout(() => {
+                e.target.load()
+            }, 1000);
+            }}
+        on:enterViewport={e => {
+            if (e.target.src) return;
+                e.target.src = e.target.dataset.src
+            }}
         on:exitViewport={e => {e.target.pause()}}
         bind:playbackRate
         bind:paused
