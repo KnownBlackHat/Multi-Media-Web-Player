@@ -16,6 +16,8 @@ $: input? toLoad = [...links.splice(0, 50)] : null
 
 <svelte:head>
     <title>Multi Media Web Player</title> 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345375298479232"
+     crossorigin="anonymous"></script>
 </svelte:head>
 
 <header class="p-4">
