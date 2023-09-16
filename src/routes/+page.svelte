@@ -16,9 +16,6 @@ $: input? toLoad = [...links.splice(0, 50)] : null
 
 <svelte:head>
     <title>Multi Media Web Player</title> 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345375298479232"
-     crossorigin="anonymous"></script>
-    <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
 </svelte:head>
 
 <header class="p-4">
@@ -33,14 +30,6 @@ $: input? toLoad = [...links.splice(0, 50)] : null
         <div class="mx-2 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {#each toLoad as link, index}
                 <MediaCard {index} src={link} {playbackRate}/>
-                <amp-ad width="100vw" height="320"
-                type="adsense"
-                data-ad-client="ca-pub-4345375298479232"
-                data-ad-slot="3336053933"
-                data-auto-format="rspv"
-                data-full-width="">
-                <div overflow=""></div>
-                </amp-ad>
             {/each}
         </div>
         {#if links.length > 0}
