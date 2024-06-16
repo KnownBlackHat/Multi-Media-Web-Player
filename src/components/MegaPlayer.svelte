@@ -1,15 +1,15 @@
 <script lang="ts">
-    export let src;
-    export let index: number;
+    export let links: string[] = [];
     export let playbackRate = 1;
 
     import { fade } from "svelte/transition";
-    import viewport from "../actions/ViewPort";
 
     let downloadBtn: HTMLDivElement;
     let paused = true;
+    let index = 0;
     let duration = 0;
     let currentTime = 0;
+    $: src = links[index];
 
     function format(seconds: number) {
         let seconds_str = null;
@@ -34,10 +34,24 @@
                     this.controls = false;
                 }
                 break;
+            case "n":
+                next();
+                break;
+            case "p":
+                previous();
+                break;
             case " ":
                 this.paused ? this.play() : this.pause();
                 break;
         }
+    }
+
+    function next() {
+        index++;
+    }
+
+    function previous() {
+        index--;
     }
 </script>
 
@@ -65,52 +79,39 @@
             </a>
         </span>
     </div>
+
     {#if src.match(/\.(jpe?g|png|gif)/)}
-        <div class="bg-black inset-0">
-            <img
-                class="rounded h-[15em] mx-auto bg-black"
-                use:viewport
-                on:enterViewport={(e) => {
-                    if (e.target.src) return;
-                    e.target.src = e.target.dataset.src;
-                }}
-                data-src={src}
-                tabindex={index}
-                alt={src}
-                on:click={(e) => {
-                    ["top-0", "h-screen"].map((v) => {
-                        e.currentTarget.classList.toggle(v);
-                    });
-                    ["fixed", "z-20"].map((v) => {
-                        e.currentTarget.parentElement?.classList.toggle(v);
-                    });
-                    document.body.classList.toggle("overflow-y-hidden");
-                }}
-            />
+        <div
+            class="bg-black inset-0"
+            role="button"
+            tabindex="0"
+            on:keydown={handlekeydown}
+            on:click={(e) => {
+                ["top-0", "h-screen"].map((v) => {
+                    e.currentTarget?.classList.toggle(v);
+                });
+                ["fixed", "z-20"].map((v) => {
+                    e.currentTarget.parentElement?.classList.toggle(v);
+                });
+                document.body.classList.toggle("overflow-y-hidden");
+            }}
+        >
+            <img class="rounded h-[15em] mx-auto bg-black" {src} alt={src} />
         </div>
     {:else}
         <video
-            async
-            class="h-60 w-full rounded"
-            data-src={src}
+            class="h-screen w-screen rounded"
+            {src}
+            autoplay
             preload="auto"
             playsinline
-            loop
-            use:viewport
-            on:enterViewport={(e) => {
-                if (e.target.src) return;
-                e.target.src = e.target.dataset.src;
-            }}
-            on:exitViewport={(e) => {
-                e.target.pause();
-            }}
-            tabindex={index}
-            bind:playbackRate
             bind:paused
+            bind:playbackRate
             bind:duration
             bind:currentTime
             on:mouseenter={(e) => e.currentTarget.focus()}
             on:keydown={handlekeydown}
+            on:ended={next}
             on:click={(e) => {
                 e.currentTarget.paused
                     ? e.currentTarget.play()
@@ -132,4 +133,12 @@
             <span>{format(duration)}</span>
         </span>
     {/if}
+    <div class="flex justify-between px-2">
+        <button class="w-full p-2 bg-green-700 text-white" on:click={next}
+            >Next</button
+        >
+        <button class="w-full p-2 bg-blue-700 text-white" on:click={previous}
+            >Previous</button
+        >
+    </div>
 </div>
