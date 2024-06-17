@@ -5,7 +5,6 @@
     import { fade } from "svelte/transition";
 
     let downloadBtn: HTMLDivElement;
-    let paused = true;
     let index = 0;
     let duration = 0;
     let currentTime = 0;
@@ -43,18 +42,21 @@
             case " ":
                 this.paused ? this.play() : this.pause();
                 break;
+            case "l":
+                this.loop = !this.loop;
         }
     }
 
     function next() {
-        index++;
+        links.length >= index && index++;
     }
 
     function previous() {
-        index--;
+        index > 0 && index--;
     }
 </script>
 
+video id: {index}
 <div
     transition:fade
     class="rounded border-2 h-fit border-white overflow-hidden"
@@ -85,7 +87,7 @@
             class="bg-black inset-0"
             role="button"
             tabindex="0"
-            on:keydown={handlekeydown}
+            on:keydown|preventDefault={handlekeydown}
             on:click={(e) => {
                 ["top-0", "h-screen"].map((v) => {
                     e.currentTarget?.classList.toggle(v);
@@ -105,12 +107,11 @@
             autoplay
             preload="auto"
             playsinline
-            bind:paused
             bind:playbackRate
             bind:duration
             bind:currentTime
             on:mouseenter={(e) => e.currentTarget.focus()}
-            on:keydown={handlekeydown}
+            on:keydown|preventDefault={handlekeydown}
             on:ended={next}
             on:click={(e) => {
                 e.currentTarget.paused
