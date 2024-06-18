@@ -42,6 +42,9 @@
             case " ":
                 this.paused ? this.play() : this.pause();
                 break;
+            case "r":
+                links = links.reverse();
+                break;
             case "l":
                 this.loop = !this.loop;
         }
@@ -56,12 +59,11 @@
     }
 </script>
 
-video id: {index}
 <div
     transition:fade
     class="rounded border-2 h-fit border-white overflow-hidden"
     role="button"
-    tabindex="0"
+    tabindex={index}
     on:mouseenter={() => {
         downloadBtn.style.visibility = "visible";
     }}
