@@ -9,6 +9,7 @@
     let duration = 0;
     let currentTime = 0;
     $: src = links[index];
+    $: console.log("links", links);
 
     function format(seconds: number) {
         let seconds_str = null;

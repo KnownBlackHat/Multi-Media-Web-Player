@@ -4,9 +4,11 @@
     let input = "";
     let videoMode = false;
     let links: string[] = [];
+    let full_links: string[] = [];
     let playbackRate = 1;
     let toLoad: string[] = [];
     $: links = input.split(" ");
+    $: full_links = input.split(" ");
     $: toLoad = [...links.splice(0, 50)];
 </script>
 
@@ -44,10 +46,9 @@
         class="w-12 text-center rounded bg-gray-500 p-1 mx-2 text-sm"
     />x
 </div>
-
 {#if input}
     {#if videoMode}
-        <MegaPlayer {links} {playbackRate} />
+        <MegaPlayer links={full_links} {playbackRate} />
     {:else}
         <div class="mx-2 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {#each toLoad as link, index}
